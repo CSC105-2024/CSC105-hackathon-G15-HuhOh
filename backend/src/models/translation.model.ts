@@ -273,7 +273,7 @@ const getTrendingSlang = async () => {
         slangTermId: "desc",
       },
     },
-    take: 5,
+    take: 3,
   });
 
   const trendingIds = topMentions.map((entry) => entry.slangTermId);

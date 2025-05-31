@@ -24,5 +24,15 @@ export const useFetch = () => {
     }
   }
 
-  return { fetchSlangs, fetchUserData, fetchError }
+  const fetchTrendSlangs = async () => {
+    try {
+      const res = await api.get(`/translations/trending`)
+      return res.data
+    } catch (e) {
+      console.error(e)
+      setFetchError(e.response.data.message)
+    }
+  }
+
+  return { fetchSlangs, fetchUserData, fetchError, fetchTrendSlangs }
 }

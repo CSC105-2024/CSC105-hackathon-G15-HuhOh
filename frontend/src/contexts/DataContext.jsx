@@ -6,8 +6,10 @@ export const DataContext = createContext()
 export const DataContextProvider = ({ children }) => {
   const { fetchUserData } = useFetch()
   const { fetchSlangs } = useFetch()
+  const { fetchTrendSlangs } = useFetch()
   const [userData, setUserData] = useState(null)
   const [slangTerms, setSlangTerms] = useState([])
+  const [trendSlangs, setTrendSlangs] = useState([])
 
   const reloadUserData = async () => {
     const res = await fetchUserData()
@@ -19,6 +21,11 @@ export const DataContextProvider = ({ children }) => {
     setSlangTerms(data)
   }
 
+  const getTrendSlangs = async () => {
+    const data = await fetchTrendSlangs()
+    setTrendSlangs(data)
+  }
+
   useEffect(() => {
     const handleStorageChange = () => {
       reloadUserData()
@@ -26,12 +33,7 @@ export const DataContextProvider = ({ children }) => {
 
     reloadUserData()
     getSlangTerms()
-
-    // window.addEventListener('storage', handleStorageChange)
-
-    // return () => {
-    //   window.removeEventListener('storage', handleStorageChange)
-    // }
+    getTrendSlangs()
   }, [])
 
   return (
@@ -42,6 +44,8 @@ export const DataContextProvider = ({ children }) => {
         reloadUserData,
         slangTerms,
         setSlangTerms,
+        trendSlangs,
+        setTrendSlangs,
       }}
     >
       {children}
