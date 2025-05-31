@@ -6,9 +6,9 @@ const DashboardNavBar = () => {
 
   const navItems = [
     {
-      name: 'translation',
+      name: 'translations',
       icon: '/icons/translate.svg',
-      link: '/translation',
+      link: '/translations',
     },
     {
       name: 'slangopedia',
