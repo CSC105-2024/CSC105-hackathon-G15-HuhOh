@@ -1,38 +1,33 @@
 import DashboardNavBar from '@/components/DashboardNavBar'
 import SlangCard from '@/components/SlangCard'
-import { Input } from '@/components/ui/input'
-import api from '@/services/api'
-import { Search } from 'lucide-react'
-import { useEffect, useState } from 'react'
-import { toast } from 'sonner'
+import { useDataContext } from '@/hooks/useDataContext'
+import { Loader2 } from 'lucide-react'
 
 const SlangopediaPage = () => {
-  const [searchQuery, setSearchQuery] = useState('')
-  const [slangTerms, setSlangTerms] = useState([])
+  const { slangTerms } = useDataContext()
 
-  const fetchSlangs = async () => {
-    try {
-      const res = await api.get(`/translations/slang/all`)
-      setSlangTerms(res.data)
-    } catch (e) {
-      toast.error('Failed to fetch slangs', e)
-      console.error(e)
-    }
-  }
+  if (!slangTerms)
+    return (
+      <div className="flex items-center justify-center h-screen w-screen">
+        <Loader2 className="animate-spin w-12 h-12 text-primary" />
+      </div>
+    )
+  // const [slangTerms, setSlangTerms] = useState([])
 
-  useEffect(() => {
-    fetchSlangs()
-  }, [])
+  // const fetchSlangs = async () => {
+  //   try {
+  //     const res = await api.get(`/translations/slang/all`)
+  //     setSlangTerms(res.data)
+  //   } catch (e) {
+  //     console.error(e)
+  //   }
+  // }
 
-  const filteredSlangs = slangTerms
-    ? slangTerms.filter((slang) => {
-        const matchesSearch =
-          searchQuery === '' ||
-          slang.term.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          slang.meaning.toLowerCase().includes(searchQuery.toLowerCase())
-        return matchesSearch
-      })
-    : null
+  // useEffect(() => {
+  //   fetchSlangs()
+  // }, [])
+
+  // console.log(slangTerms)
 
   return (
     <div className="min-h-screen bg-gray-50">
