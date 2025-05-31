@@ -6,6 +6,7 @@ import { Loader2 } from 'lucide-react'
 import TranslationPage from './pages/Translation/TranslationPage'
 import SignInPage from './pages/SignIn/SignInPage'
 import ProfilePage from './pages/ProfilePage/ProfilePage'
+import SlangopediaPage from './pages/Slangopedia/SlangopediaPage'
 
 const LoadingFallback = () => (
   <div className="flex justify-center items-center h-screen">
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
   {
     path: '/profile',
     element: <ProfilePage />,
+  },
+  {
+    path: '/slangopedia',
+    element: <SlangopediaPage />,
   },
 ])
 
