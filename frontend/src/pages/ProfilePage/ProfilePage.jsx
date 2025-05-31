@@ -5,7 +5,7 @@ const ProfilePage = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <DashboardNavBar />
-      <main className="flex flex-col items-center py-4 px-4 ">
+      <main className="flex flex-col items-center py-4 px-4 -mt-20">
         {/* Profile Header */}
         <section className="w-full max-w-3xl bg-white rounded-2xl shadow-md p-8 mb-8">
           <div className="flex flex-col items-center gap-4">

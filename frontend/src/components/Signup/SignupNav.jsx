@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import { Link } from 'react-router-dom'
 
 const SignupNav = () => {
   return (
@@ -16,10 +17,11 @@ const SignupNav = () => {
           HuhOh <span className="text-gray-500 font-normal">(H O)</span>
         </span>
       </a>
-
-      <Button className="px-4 py-2 rounded-full text-white bg-purple-600 hover:bg-purple-700">
-        Sign In
-      </Button>
+      <Link to="/signin">
+        <Button className="px-4 py-2 rounded-full text-white bg-purple-600 hover:bg-purple-700">
+          Sign In
+        </Button>
+      </Link>
     </header>
   )
 }
