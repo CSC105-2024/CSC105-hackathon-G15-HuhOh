@@ -6,9 +6,10 @@ import { useNavigate, Link } from 'react-router-dom'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import SignupNav from '@/components/Signup/SignupNav' // Top navbar component
+import SignupNav from '@/components/Signup/SignupNav'
+import api from '@/services/api'
+import { toast } from 'sonner'
 
-// Zod validation schema with username
 const signupSchema = z
   .object({
     username: z.string().min(2, 'Username is required'),
@@ -21,7 +22,7 @@ const signupSchema = z
     path: ['confirmPassword'],
   })
 
-const SignUp = () => {
+const SignUpPage = () => {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
 
@@ -37,14 +38,30 @@ const SignUp = () => {
   const onSubmit = async (data) => {
     setLoading(true)
     try {
-      console.log('Sending data to backend:', data)
+      const res = await api.post(`/auth/signup`, {
+        username: data.username,
+        email: data.email,
+        password: data.password,
+      })
+
+      if (res.data.success) {
+        toast.success('Sign In successful')
+        setTimeout(() => {
+          navigate('/signup')
+        }, 750)
+      } else {
+        setTimeout(() => {
+          toast.error(res.data?.msg || 'Signup failed')
+        }, 750)
+      }
+    } catch (err) {
+      setTimeout(() => {
+        toast.error(err.response?.data?.msg || 'Server error')
+      }, 750)
+    } finally {
       setTimeout(() => {
         setLoading(false)
-        navigate('/signin')
-      }, 1000)
-    } catch (err) {
-      setLoading(false)
-      console.error('Sign up error:', err)
+      }, 1500)
     }
   }
 
@@ -149,4 +166,4 @@ const SignUp = () => {
   )
 }
 
-export default SignUp
+export default SignUpPage

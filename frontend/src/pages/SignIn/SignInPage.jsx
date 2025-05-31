@@ -7,14 +7,15 @@ import { useNavigate, Link } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import SigninNav from '@/components/SignIn/SignInNav'
+import { toast } from 'sonner'
+import api from '@/services/api'
 
-// Zod validation schema for sign in
 const signinSchema = z.object({
-  email: z.string().email('wrong email address'),
-  password: z.string().min(6, 'wrong password'),
+  email: z.string().email('Invalid email address'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
 })
 
-const SignIn = () => {
+const SignInPage = () => {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
 
@@ -30,14 +31,26 @@ const SignIn = () => {
   const onSubmit = async (data) => {
     setLoading(true)
     try {
-      console.log('Signing in with:', data)
+      const res = await api.post(`/auth/signin`, {
+        email: data.email,
+        password: data.password,
+      })
+      if (res.data.success) {
+        toast.success('Login Successful')
+        setTimeout(() => {
+          navigate('/translations')
+        }, 750)
+      } else {
+        setTimeout(() => {
+          toast.error(res.data?.msg || 'Login failed')
+        }, 750)
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.msg || 'Server error')
+    } finally {
       setTimeout(() => {
         setLoading(false)
-        navigate('/dashboard') // Change this route as needed
-      }, 1000)
-    } catch (err) {
-      setLoading(false)
-      console.error('Sign in error:', err)
+      }, 1500)
     }
   }
 
@@ -116,4 +129,4 @@ const SignIn = () => {
   )
 }
 
-export default SignIn
+export default SignInPage

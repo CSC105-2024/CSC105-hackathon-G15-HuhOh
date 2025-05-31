@@ -4,13 +4,14 @@ import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 import { toast } from 'sonner'
-import { ArrowRightLeft, CopyIcon } from 'lucide-react'
+import { ArrowRightLeft, CopyIcon, Loader2 } from 'lucide-react'
 import api from '@/services/api'
 
 const TranslationPage = () => {
   const [inputText, setInputText] = useState('')
   const [outputText, setOutputText] = useState('')
   const [isGenZToEnglish, setIsGenZToEnglish] = useState(true)
+  const [isTranslating, setIsTranslating] = useState(false)
 
   const word = 'Cap'
 
@@ -46,19 +47,39 @@ const TranslationPage = () => {
     ? 'Translation will appear here...'
     : 'Slang translation will appear here...'
 
-  const translateText = async (text) => {
+  const translateText = async () => {
     if (!inputText.trim()) {
       toast.warning('Please enter some text to translate')
       return
     }
+    setIsTranslating(true)
+
+    const formData = new FormData()
+    formData.append('input', inputText)
+
     try {
-      if (isGenZToEnglish) {
-        const res = await api.post(`/translations/ZtoEN`, text)
-        console.log(res.data)
-      } else {
-        const res = await api.post(`/translations/ENtoZ`, text)
-        console.log(res.data)
-      }
+      const endpoint = isGenZToEnglish
+        ? '/translations/ZtoEN'
+        : '/translations/ENtoZ'
+
+      const translationPromise = api
+        .post(endpoint, formData)
+        .then((response) => {
+          return response.data.translated
+        })
+
+      toast.promise(translationPromise, {
+        loading: 'Translating...',
+        success: (translatedText) => {
+          setOutputText(translatedText)
+          setIsTranslating(false)
+          return 'Translation completed!'
+        },
+        error: (error) => {
+          console.error('Translation error:', error)
+          return 'Translation failed. Please try again.'
+        },
+      })
     } catch (error) {
       console.error('Translation error:', error)
       throw error
@@ -67,15 +88,11 @@ const TranslationPage = () => {
 
   const handleTranslate = async () => {
     try {
-      const translation = await translateText(inputText)
-      setOutputText(translation)
-      toast.success('Translation completed!')
+      await translateText()
     } catch (e) {
-      toast.error('Translation failed. Please try again.')
       console.error('Translation error:', e)
     }
   }
-
   // TODO: add share btn with shadcn
   // const handleShare = async () => {
   //   try {
@@ -110,8 +127,9 @@ const TranslationPage = () => {
             onChange={(e) => setInputText(e.target.value)}
           />
           <div className="flex justify-end">
-            <Button className="w-20" onClick={() => handleTranslate(inputText)}>
-              Translate
+            <Button disabled={isTranslating} onClick={handleTranslate}>
+              {isTranslating && <Loader2 className="w-4 h-4 animate-spin" />}
+              {isTranslating ? 'Translating...' : 'Translate'}
             </Button>
           </div>
         </div>

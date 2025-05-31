@@ -2,7 +2,8 @@ import { GoogleGenAI } from "@google/genai";
 import type { Context } from "hono";
 
 const generateTranslation = async (c: Context) => {
-  const { input } = await c.req.json();
+  const formData = await c.req.formData();
+  const input = formData.get("input") as string;
 
   const prompt = `
 Rewrite the following slang-heavy sentence into plain English. Extract all slang words and provide their meanings.Also add example sentence for each slang word and their origin.
@@ -59,7 +60,7 @@ Only return JSON. No markdown or code block.
     console.error("Gemini error:", err);
     return c.json(
       { error: "Failed to parse response from model", detail: err },
-      500
+      500,
     );
   }
 };

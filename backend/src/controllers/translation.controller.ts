@@ -14,7 +14,6 @@ const createTranslation = async (c: Context) => {
     }
 
     const response = await generateTranslation(c);
-    console.log("response", response);
     const { output } = await response.json();
 
     if (!output) {
@@ -33,7 +32,7 @@ const createTranslation = async (c: Context) => {
 
     const translation = await translationModel.createTranslation(
       translationData,
-      output.slang
+      output.slang,
     );
 
     return c.json(translation, 201);
@@ -44,7 +43,7 @@ const createTranslation = async (c: Context) => {
         error: "Failed to create translation",
         detail: error instanceof Error ? error.message : "Unknown error",
       },
-      500
+      500,
     );
   }
 };
@@ -60,7 +59,7 @@ const saveTranslation = async (c: Context) => {
 
     const savedTranslation = await translationModel.saveTranslation(
       translationId,
-      userId
+      userId,
     );
 
     return c.json(savedTranslation, 201);
@@ -78,9 +77,8 @@ const deleteTranslation = async (c: Context) => {
       return c.json({ error: "Translation ID is required" }, 400);
     }
 
-    const deletedTranslation = await translationModel.deleteTranslation(
-      translationId
-    );
+    const deletedTranslation =
+      await translationModel.deleteTranslation(translationId);
     return c.json(deletedTranslation, 200);
   } catch (error) {
     console.error("Translation delete error:", error);

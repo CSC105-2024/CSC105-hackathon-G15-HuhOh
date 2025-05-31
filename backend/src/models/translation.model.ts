@@ -49,14 +49,14 @@ const getOrCreateSlangTermIds = async (slangTerms: SlangTerm[]) => {
         },
       });
       return term.id;
-    })
+    }),
   );
   return slangTermIds;
 };
 
 const createTranslation = async (
   data: CreateTranslationBody,
-  slangTerms: SlangTerm[]
+  slangTerms: SlangTerm[],
 ) => {
   const slangTermIds = await getOrCreateSlangTermIds(slangTerms);
 
@@ -81,7 +81,9 @@ const createTranslation = async (
     },
   });
 
-  return translation;
+  const { original, translated } = translation;
+
+  return { original, translated };
 };
 
 const saveTranslation = async (id: string, userId: string) => {
