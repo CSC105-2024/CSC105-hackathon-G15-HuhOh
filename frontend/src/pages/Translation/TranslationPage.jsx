@@ -165,7 +165,8 @@ const TranslationPage = () => {
             onChange={(e) => setOutputText(e.target.value)}
             readOnly
           />
-          <div className="flex justify-end">
+          <div className="flex justify-between">
+            <Button className="w-20">Copy</Button>
             <Button className="w-20">Share</Button>
           </div>
         </div>
