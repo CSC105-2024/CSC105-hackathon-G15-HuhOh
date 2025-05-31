@@ -20,6 +20,10 @@
   --color-secondary-hover: #52525b;
   --color-secondary-pressed: #3f3f46;
 
+  --color-accent: #5eead4;
+  --color-accent-hover: #2dd4bf;
+  --color-accent-pressed: #14b8a6;
+
   --color-warning: #ff0000;
   --color-warning-hover: #d97706;
   --color-warning-pressed: #b45309;

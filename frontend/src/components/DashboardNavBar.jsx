@@ -15,15 +15,10 @@ const DashboardNavBar = () => {
       icon: '/icons/dictionary.svg',
       link: '/slangopedia',
     },
-    {
-      name: 'profile',
-      icon: '/icons/profile.svg',
-      link: '/profile',
-    },
   ]
 
   return (
-    <header className="sticky top-0 z-50 flex flex-row justify-between items-center px-6 lg:px-12 py-4 bg-white/80 backdrop-blur-sm border-b border-gray-200/50">
+    <header className="sticky top-0 z-49 mb-24 flex flex-row justify-between items-center px-6 lg:px-12 py-4 bg-white/80 backdrop-blur-sm border-b border-gray-200/50">
       <Link to="/" aria-label="Logo" className="flex items-center gap-3 group">
         <div className="relative">
           <img
@@ -64,6 +59,12 @@ const DashboardNavBar = () => {
               </li>
             )
           })}
+          <img
+            src={''}
+            // src={userData.profilePic}
+            alt="Profile"
+            className="w-8 h-8 lg:w-16 lg:h-16 rounded-full cursor-pointer"
+          />
         </ul>
       </nav>
     </header>
