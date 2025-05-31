@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input'
 import api from '@/services/api'
 import { Search } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
 const SlangopediaPage = () => {
   const [searchQuery, setSearchQuery] = useState('')
@@ -14,6 +15,7 @@ const SlangopediaPage = () => {
       const res = await api.get(`/translations/slang/all`)
       setSlangTerms(res.data)
     } catch (e) {
+      toast.error('Failed to fetch slangs', e)
       console.error(e)
     }
   }
