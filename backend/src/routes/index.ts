@@ -1,6 +1,6 @@
 import { Hono } from "hono";
-import { userRouter } from "./user.route.js";
-import { translationRouter } from "./translation.route.js";
+import { userRouter } from "./user.route.ts";
+import { translationRouter } from "./translation.route.ts";
 
 const mainRouter = new Hono();
 

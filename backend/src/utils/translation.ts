@@ -1,5 +1,4 @@
 import { Hono } from "hono";
-import axios from "axios";
 import { GoogleGenAI } from "@google/genai";
 
 interface SlangTerm {
@@ -54,34 +53,21 @@ Only return JSON. No markdown or code block.
         role: "user",
         parts: [
           {
-            text: `Rewrite the following slang-heavy sentence into plain English. Extract all slang words and provide their meanings.
-
-Respond in strict JSON like:
-{
-  "original": "...",
-  "translated": "...",
-  "slang": [
-    { "term": "slang1", "meaning": "..." },
-    ...
-  ]
-}
-
-Sentence: "${input}"
-
-Only return JSON. No markdown or code block.`,
+            text: prompt,
           },
         ],
       },
     ];
-    const response = await ai.models.generateContentStream({
+    const response = await ai.models.generateContent({
       model,
       config,
       contents,
     });
 
-    let res: string = "";
-    for await (const chunk of response) {
-      res += chunk.text;
+    const res = response?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+    if (!res) {
+      throw new Error("No text in model response");
     }
 
     const output = JSON.parse(res);

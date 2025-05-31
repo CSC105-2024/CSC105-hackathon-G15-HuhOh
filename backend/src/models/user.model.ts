@@ -1,4 +1,4 @@
-import db from "../lib/db.js";
+import db from "../lib/db.ts";
 import { hash, compare } from "bcryptjs";
 
 const findByEmail = async (email: string) => {
