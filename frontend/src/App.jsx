@@ -4,7 +4,7 @@ import SignUpPage from './pages/SignUp/SignUpPage'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { Loader2 } from 'lucide-react'
 import TranslationPage from './pages/Translation/TranslationPage'
-import SignIn from './pages/SignIn/SignInPage'
+import SignInPage from './pages/SignIn/SignInPage'
 import ProfilePage from './pages/ProfilePage/ProfilePage'
 
 const LoadingFallback = () => (
