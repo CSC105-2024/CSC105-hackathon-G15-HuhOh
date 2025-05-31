@@ -111,6 +111,9 @@ const getAllSavedTranslationsByUser = async (c: Context) => {
 const getSlangTermById = async (c: Context) => {
   const slangTermId = c.req.param("id");
   const slangTerm = await translationModel.getSlangTermById(slangTermId);
+  if (!slangTerm) {
+    return c.json({ error: "Slang term not found" }, 404);
+  }
   return c.json(slangTerm, 200);
 };
 

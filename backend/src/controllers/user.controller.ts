@@ -94,6 +94,15 @@ const signInUser = async (c: Context) => {
   }
 };
 
+const getUserInfo = async (c: Context) => {
+  const userId = c.get("userId");
+  if (!userId) {
+    return c.json({ success: false, msg: "Unauthorized" }, 401);
+  }
+  const user = await userModel.getUserInfo(userId);
+  return c.json({ success: true, data: user, msg: "User info fetched" });
+};
+
 const signOutUser = async (c: Context) => {
   deleteCookie(c, "token");
   deleteCookie(c, "refresh_token");
@@ -178,7 +187,7 @@ const updateProfile = async (c: Context) => {
       const dataUri = `data:${profilePic.type};base64,${base64Image}`;
 
       const uploaded = await cloudinary.uploader.upload(dataUri, {
-        folder: "stylofi/profiles",
+        folder: "huhoh/profiles",
       });
 
       updateData.profilePic = uploaded.secure_url;
@@ -196,4 +205,11 @@ const updateProfile = async (c: Context) => {
   }
 };
 
-export { createUser, signInUser, refreshToken, updateProfile, signOutUser };
+export {
+  createUser,
+  signInUser,
+  getUserInfo,
+  refreshToken,
+  updateProfile,
+  signOutUser,
+};

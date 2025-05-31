@@ -6,6 +6,7 @@ import { verifyAuth } from "../middlewares/verifyAuth.ts";
 const userRouter = new Hono();
 
 userRouter.get("/check", authCheck);
+userRouter.get("/info", verifyAuth, userController.getUserInfo);
 userRouter.post("/signup", userController.createUser);
 userRouter.post("/signin", userController.signInUser);
 userRouter.post("/refresh", userController.refreshToken);
