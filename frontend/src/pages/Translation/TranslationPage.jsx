@@ -77,6 +77,7 @@ const TranslationPage = () => {
         },
         error: (error) => {
           console.error('Translation error:', error)
+          setIsTranslating(false)
           return 'Translation failed. Please try again.'
         },
       })
