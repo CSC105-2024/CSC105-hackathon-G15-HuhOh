@@ -78,7 +78,7 @@ const getOrCreateSlangTermIds = async (slangTerms: SlangTerm[]) => {
         },
       });
       return term.id;
-    }),
+    })
   );
   return slangTermIds;
 };
@@ -112,7 +112,7 @@ const getAllSlangTerms = async () => {
 
 const createZtoENTranslation = async (
   data: CreateTranslationBody,
-  slangTerms: SlangTerm[],
+  slangTerms: SlangTerm[]
 ) => {
   const slangTermIds = await getOrCreateSlangTermIds(slangTerms);
 
@@ -144,7 +144,7 @@ const createZtoENTranslation = async (
 
 const createENtoZTranslation = async (
   data: CreateTranslationBody,
-  slangTerms: SlangTerm[],
+  slangTerms: SlangTerm[]
 ) => {
   const slangTermIds = await getOrCreateSlangTermIds(slangTerms);
 
@@ -276,35 +276,35 @@ const getTrendingSlang = async () => {
     take: 5,
   });
 
-  // const trendingIds = topMentions.map((entry) => entry.slangTermId);
+  const trendingIds = topMentions.map((entry) => entry.slangTermId);
 
-  // const trendingSlangs = await db.slangTerm.findMany({
-  //   where: {
-  //     id: { in: trendingIds },
-  //   },
-  //   select: {
-  //     id: true,
-  //     term: true,
-  //     meaning: true,
-  //     example: true,
-  //     origin: true,
-  //   },
-  // });
+  const trendingSlangs = await db.slangTerm.findMany({
+    where: {
+      id: { in: trendingIds },
+    },
+    select: {
+      id: true,
+      term: true,
+      meaning: true,
+      example: true,
+      origin: true,
+    },
+  });
 
-  // const slangMap = new Map(trendingSlangs.map((slang) => [slang.id, slang]));
+  const slangMap = new Map(trendingSlangs.map((slang) => [slang.id, slang]));
 
-  // const withCounts = topMentions
-  //   .map((mention) => {
-  //     const slang = slangMap.get(mention.slangTermId);
-  //     return {
-  //       ...slang,
-  //       count: mention._count.slangTermId,
-  //     };
-  //   })
-  //   .filter(Boolean)
-  //   .sort((a, b) => b.count - a.count);
+  const withCounts = topMentions
+    .map((mention) => {
+      const slang = slangMap.get(mention.slangTermId);
+      return {
+        ...slang,
+        count: mention._count.slangTermId,
+      };
+    })
+    .filter(Boolean)
+    .sort((a, b) => b.count - a.count);
 
-  return topMentions;
+  return withCounts;
 };
 
 export {
