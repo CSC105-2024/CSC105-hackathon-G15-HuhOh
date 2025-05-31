@@ -1,19 +1,20 @@
 import type { Context } from "hono";
 import * as translationModel from "../models/translation.model.ts";
 import type { CreateTranslationBody } from "../types/index.ts";
-import { generateTranslation } from "../middlewares/generateTranslation.ts";
+import {
+  generateEntoZTranslation,
+  generateZtoENTranslation,
+} from "../middlewares/generateTranslation.ts";
 
-const createTranslation = async (c: Context) => {
+const createZtoENTranslation = async (c: Context) => {
   try {
     const userId = c.get("userId");
-
-    console.log("userId", userId);
 
     if (!userId) {
       return c.json({ error: "User not authenticated" }, 401);
     }
 
-    const response = await generateTranslation(c);
+    const response = await generateZtoENTranslation(c);
     const { output } = await response.json();
 
     if (!output) {
@@ -30,9 +31,9 @@ const createTranslation = async (c: Context) => {
       userId,
     };
 
-    const translation = await translationModel.createTranslation(
+    const translation = await translationModel.createZtoENTranslation(
       translationData,
-      output.slang
+      output.slang,
     );
 
     return c.json(translation, 201);
@@ -43,7 +44,50 @@ const createTranslation = async (c: Context) => {
         error: "Failed to create translation",
         detail: error instanceof Error ? error.message : "Unknown error",
       },
-      500
+      500,
+    );
+  }
+};
+
+const createEnToZTranslation = async (c: Context) => {
+  try {
+    const userId = c.get("userId");
+
+    if (!userId) {
+      return c.json({ error: "User not authenticated" }, 401);
+    }
+
+    const response = await generateEntoZTranslation(c);
+    const { output } = await response.json();
+
+    if (!output) {
+      throw new Error("Failed to get translation");
+    }
+
+    if (!output.slang || output.slang.length === 0) {
+      return c.json({ error: "No slang terms found in the input text" }, 400);
+    }
+
+    const translationData: CreateTranslationBody = {
+      original: output.original,
+      translated: output.translated,
+      userId,
+    };
+
+    const translation = await translationModel.createZtoENTranslation(
+      translationData,
+      output.slang,
+    );
+
+    return c.json(translation, 201);
+  } catch (error) {
+    console.error("Translation creation error:", error);
+    return c.json(
+      {
+        error: "Failed to create translation",
+        detail: error instanceof Error ? error.message : "Unknown error",
+      },
+      500,
     );
   }
 };
@@ -59,7 +103,7 @@ const saveTranslation = async (c: Context) => {
 
     const savedTranslation = await translationModel.saveTranslation(
       translationId,
-      userId
+      userId,
     );
 
     return c.json(savedTranslation, 201);
@@ -77,9 +121,8 @@ const deleteTranslation = async (c: Context) => {
       return c.json({ error: "Translation ID is required" }, 400);
     }
 
-    const deletedTranslation = await translationModel.deleteTranslation(
-      translationId
-    );
+    const deletedTranslation =
+      await translationModel.deleteTranslation(translationId);
     return c.json(deletedTranslation, 200);
   } catch (error) {
     console.error("Translation delete error:", error);
@@ -94,9 +137,8 @@ const getTrendingSlang = async (c: Context) => {
 
 const getAllTranslationsByUser = async (c: Context) => {
   const userId = c.get("userId");
-  const allTranslations = await translationModel.getAllTranslationsByUser(
-    userId
-  );
+  const allTranslations =
+    await translationModel.getAllTranslationsByUser(userId);
   return c.json(allTranslations, 200);
 };
 
@@ -123,7 +165,8 @@ const getAllSlangTerms = async (c: Context) => {
 };
 
 export {
-  createTranslation,
+  createZtoENTranslation,
+  createEnToZTranslation,
   saveTranslation,
   deleteTranslation,
   getTrendingSlang,

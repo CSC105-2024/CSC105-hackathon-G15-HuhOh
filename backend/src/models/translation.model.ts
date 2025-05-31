@@ -78,7 +78,7 @@ const getOrCreateSlangTermIds = async (slangTerms: SlangTerm[]) => {
         },
       });
       return term.id;
-    })
+    }),
   );
   return slangTermIds;
 };
@@ -110,9 +110,41 @@ const getAllSlangTerms = async () => {
   return slangTerms;
 };
 
-const createTranslation = async (
+const createZtoENTranslation = async (
   data: CreateTranslationBody,
-  slangTerms: SlangTerm[]
+  slangTerms: SlangTerm[],
+) => {
+  const slangTermIds = await getOrCreateSlangTermIds(slangTerms);
+
+  const translation = await db.translation.create({
+    data: {
+      original: data.original,
+      translated: data.translated,
+      userId: data.userId,
+      slangMentions: {
+        create: slangTermIds.map((slangTermId) => ({
+          slangTermId,
+        })),
+      },
+    },
+    include: {
+      slangMentions: {
+        include: {
+          slangTerm: true,
+        },
+      },
+      user: true,
+    },
+  });
+
+  const { original, translated } = translation;
+
+  return { original, translated };
+};
+
+const createENtoZTranslation = async (
+  data: CreateTranslationBody,
+  slangTerms: SlangTerm[],
 ) => {
   const slangTermIds = await getOrCreateSlangTermIds(slangTerms);
 
@@ -279,7 +311,7 @@ export {
   getTranslationById,
   getAllTranslationsByUser,
   getAllSavedTranslationsByUser,
-  createTranslation,
+  createZtoENTranslation,
   saveTranslation,
   deleteTranslation,
   getOrCreateSlangTermIds,

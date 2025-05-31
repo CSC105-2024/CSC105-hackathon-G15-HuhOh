@@ -5,8 +5,8 @@ const SlangCard = ({ term, meaning, example }) => {
         <h1 className="text-center font-bold text-3xl">{term}</h1>
       </div>
       <div className="space-y-2 w-full p-4">
-        <p className="text-gray-700 text-center font-medium">{meaning}</p>
-        <p className="text-gray-500 text-sm text-center italic mb-3">
+        <p className="text-gray-700 font-medium">{meaning}</p>
+        <p className="text-gray-500 text-sm italic mb-3">
           <span>e.g.</span>"{example}"
         </p>
       </div>
