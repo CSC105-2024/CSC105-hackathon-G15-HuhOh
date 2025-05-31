@@ -37,7 +37,7 @@ const DashboardNavBar = () => {
           HuhOh <span className="text-gray-500 font-normal">(H O)</span>
         </span>
       </Link>
-      <nav>
+      <nav aria-label="Dashboard navigation">
         <ul className="flex flex-row gap-6">
           {navItems.map((navItem) => {
             const active = isActive(navItem.link)
