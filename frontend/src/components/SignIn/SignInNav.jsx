@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-
+import { Link } from 'react-router-dom'
 const SigninNav = () => {
   return (
     <header className="flex justify-between items-center px-6 lg:px-12 py-4 bg-white/80 backdrop-blur-sm border-b border-gray-200/50">
@@ -16,10 +16,11 @@ const SigninNav = () => {
           HuhOh <span className="text-gray-500 font-normal">(H O)</span>
         </span>
       </a>
-
-      <Button className="px-4 py-2 rounded-full text-white bg-purple-600 hover:bg-purple-700">
-        Sign Up
-      </Button>
+      <Link to="/signup">
+        <Button className="px-4 py-2 rounded-full text-white bg-purple-600 hover:bg-purple-700">
+          Sign Up
+        </Button>
+      </Link>
     </header>
   )
 }
