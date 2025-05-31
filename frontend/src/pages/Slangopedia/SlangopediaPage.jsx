@@ -2,8 +2,12 @@ import DashboardNavBar from '@/components/DashboardNavBar'
 import SlangCard from '@/components/SlangCard'
 import { useDataContext } from '@/hooks/useDataContext'
 import { Loader2 } from 'lucide-react'
+import { Input } from '@/components/ui/input'
+import { Search } from 'lucide-react'
+import { useState } from 'react'
 
 const SlangopediaPage = () => {
+  const [searchQuery, setSearchQuery] = useState('')
   const { slangTerms } = useDataContext()
 
   if (!slangTerms)
@@ -12,22 +16,16 @@ const SlangopediaPage = () => {
         <Loader2 className="animate-spin w-12 h-12 text-primary" />
       </div>
     )
-  // const [slangTerms, setSlangTerms] = useState([])
 
-  // const fetchSlangs = async () => {
-  //   try {
-  //     const res = await api.get(`/translations/slang/all`)
-  //     setSlangTerms(res.data)
-  //   } catch (e) {
-  //     console.error(e)
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   fetchSlangs()
-  // }, [])
-
-  // console.log(slangTerms)
+  const filteredSlangs = slangTerms
+    ? slangTerms.filter((slang) => {
+        const matchesSearch =
+          searchQuery === '' ||
+          slang.term.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          slang.meaning.toLowerCase().includes(searchQuery.toLowerCase())
+        return matchesSearch
+      })
+    : null
 
   return (
     <div className="min-h-screen bg-gray-50">
