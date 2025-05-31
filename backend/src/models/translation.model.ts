@@ -17,17 +17,17 @@ const getTranslationById = async (id: string) => {
 };
 
 const getAllTranslationsByUser = async (userId: string) => {
-  const translations = await db.translation.findMany({
-    where: { userId },
-    include: {
-      slangMentions: {
-        include: {
-          slangTerm: true,
-        },
+  const translations = await Promise.all([
+    db.translation.findMany({
+      where: { userId },
+      select: {
+        id: true,
+        original: true,
+        translated: true,
+        createdAt: true,
       },
-      user: true,
-    },
-  });
+    }),
+  ]);
   return translations;
 };
 
@@ -40,6 +40,7 @@ const getAllSavedTranslationsByUser = async (userId: string) => {
           select: {
             original: true,
             translated: true,
+            createdAt: true,
           },
         },
       },
@@ -53,6 +54,7 @@ const getAllSavedTranslationsByUser = async (userId: string) => {
     translations: savedTranslations.map((st) => ({
       original: st.translation.original,
       translated: st.translation.translated,
+      createdAt: st.translation.createdAt,
     })),
     totalCount,
   };
@@ -79,6 +81,33 @@ const getOrCreateSlangTermIds = async (slangTerms: SlangTerm[]) => {
     })
   );
   return slangTermIds;
+};
+
+const getSlangTermById = async (id: string) => {
+  const slangTerm = await db.slangTerm.findUnique({
+    where: { id },
+    select: {
+      id: true,
+      term: true,
+      meaning: true,
+      example: true,
+      origin: true,
+    },
+  });
+  return slangTerm;
+};
+
+const getAllSlangTerms = async () => {
+  const slangTerms = await db.slangTerm.findMany({
+    select: {
+      id: true,
+      term: true,
+      meaning: true,
+      example: true,
+      origin: true,
+    },
+  });
+  return slangTerms;
 };
 
 const createTranslation = async (
@@ -194,6 +223,41 @@ const deleteTranslation = async (id: string) => {
   return deletedTranslation;
 };
 
+// const deleteAllTranslationsByUser = async (userId: string) => {
+//   const translations = await db.translation.findMany({
+//     where: { userId },
+//   });
+
+//   await Promise.all(
+//     translations.map(async (translation) => {
+//       // Delete saved translations first
+//       await db.savedTranslation.deleteMany({
+//         where: { translationId: translation.id },
+//       });
+
+//       // Delete slang mentions
+//       await db.slangMention.deleteMany({
+//         where: { translationId: translation.id },
+//       });
+//     })
+//   );
+
+//   // Delete all translations
+//   await db.translation.deleteMany({ where: { userId } });
+
+//   // Clean up any unused slang terms
+//   await db.slangTerm.deleteMany({
+//     where: {
+//       protected: false,
+//       mentions: {
+//         none: {},
+//       },
+//     },
+//   });
+
+//   return translations;
+// };
+
 const getTrendingSlang = async () => {
   const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
 
@@ -254,5 +318,7 @@ export {
   saveTranslation,
   deleteTranslation,
   getOrCreateSlangTermIds,
+  getSlangTermById,
+  getAllSlangTerms,
   getTrendingSlang,
 };

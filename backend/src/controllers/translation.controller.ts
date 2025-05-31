@@ -108,6 +108,17 @@ const getAllSavedTranslationsByUser = async (c: Context) => {
   return c.json(allSavedTranslations, 200);
 };
 
+const getSlangTermById = async (c: Context) => {
+  const slangTermId = c.req.param("id");
+  const slangTerm = await translationModel.getSlangTermById(slangTermId);
+  return c.json(slangTerm, 200);
+};
+
+const getAllSlangTerms = async (c: Context) => {
+  const slangTerms = await translationModel.getAllSlangTerms();
+  return c.json(slangTerms, 200);
+};
+
 export {
   createTranslation,
   saveTranslation,
@@ -115,4 +126,6 @@ export {
   getTrendingSlang,
   getAllTranslationsByUser,
   getAllSavedTranslationsByUser,
+  getSlangTermById,
+  getAllSlangTerms,
 };
