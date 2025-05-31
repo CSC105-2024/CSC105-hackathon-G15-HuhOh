@@ -47,7 +47,7 @@ const SignUpPage = () => {
       if (res.data.success) {
         toast.success('Sign Up successful')
         setTimeout(() => {
-          navigate('/signup')
+          navigate('/signin')
         }, 750)
       } else {
         setTimeout(() => {
