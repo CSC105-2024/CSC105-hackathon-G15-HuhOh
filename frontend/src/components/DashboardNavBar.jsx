@@ -6,9 +6,9 @@ const DashboardNavBar = () => {
 
   const navItems = [
     {
-      name: 'translation',
+      name: 'translations',
       icon: '/icons/translate.svg',
-      link: '/translation',
+      link: '/translations',
     },
     {
       name: 'slangopedia',
@@ -18,7 +18,7 @@ const DashboardNavBar = () => {
   ]
 
   return (
-    <header className="sticky top-0 z-49 mb-24 flex flex-row justify-between items-center px-6 lg:px-12 py-4 bg-white/80 backdrop-blur-sm border-b border-gray-200/50">
+    <header className="sticky top-0 z-49 mb-25 flex flex-row justify-between items-center px-6 lg:px-12 py-4 bg-white/80 backdrop-blur-sm border-b border-gray-200/50">
       <Link to="/" aria-label="Logo" className="flex items-center gap-3 group">
         <div className="relative">
           <img
@@ -33,7 +33,7 @@ const DashboardNavBar = () => {
         </span>
       </Link>
       <nav aria-label="Dashboard navigation">
-        <ul className="flex flex-row gap-6">
+        <ul className="flex flex-row gap-6 items-center">
           {navItems.map((navItem) => {
             const active = isActive(navItem.link)
             return (
