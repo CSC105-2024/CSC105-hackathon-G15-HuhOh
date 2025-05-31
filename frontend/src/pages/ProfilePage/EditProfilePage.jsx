@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import DashboardNavBar from '@/components/DashboardNavBar'
+import ProfileNavBar from '@/components/ProfileNavBar'
 import api from '@/services/api'
 import { toast } from 'sonner'
 
@@ -46,9 +46,9 @@ const EditProfilePage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <DashboardNavBar />
+      <ProfileNavBar />
 
-      <div className="max-w-md mx-auto p-6">
+      <div className="max-w-md mx-auto p-6 pt-10">
         {/* Profile Picture Upload */}
         <div className="flex flex-col items-center mb-8">
           <div
@@ -82,7 +82,7 @@ const EditProfilePage = () => {
           </Button>
         </div>
 
-        {/* Form Fields - No Labels */}
+        {/* Form Fields */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input
             placeholder="Username"
@@ -122,7 +122,7 @@ const EditProfilePage = () => {
             </Button>
             <Button
               type="submit"
-              className="flex-1 bg-blue-600 hover:bg-blue-700"
+              className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
             >
               Update Profile
             </Button>

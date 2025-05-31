@@ -8,6 +8,7 @@ import SignInPage from './pages/SignIn/SignInPage'
 import ProfilePage from './pages/ProfilePage/ProfilePage'
 import SlangopediaPage from './pages/Slangopedia/SlangopediaPage'
 import EditProfilePage from './pages/ProfilePage/EditProfilePage'
+import HistoryPage from './pages/History/HistoryPage'
 
 const LoadingFallback = () => (
   <div className="flex justify-center items-center h-screen">
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
   {
     path: '/profile/edit',
     element: <EditProfilePage />,
+  },
+  {
+    path: '/profile/history',
+    element: <HistoryPage />,
   },
 ])
 
