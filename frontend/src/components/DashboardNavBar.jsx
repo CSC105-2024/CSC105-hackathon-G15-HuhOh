@@ -33,7 +33,7 @@ const DashboardNavBar = () => {
         </span>
       </Link>
       <nav aria-label="Dashboard navigation">
-        <ul className="flex flex-row gap-6">
+        <ul className="flex flex-row gap-6 items-center">
           {navItems.map((navItem) => {
             const active = isActive(navItem.link)
             return (
