@@ -223,41 +223,6 @@ const deleteTranslation = async (id: string) => {
   return deletedTranslation;
 };
 
-// const deleteAllTranslationsByUser = async (userId: string) => {
-//   const translations = await db.translation.findMany({
-//     where: { userId },
-//   });
-
-//   await Promise.all(
-//     translations.map(async (translation) => {
-//       // Delete saved translations first
-//       await db.savedTranslation.deleteMany({
-//         where: { translationId: translation.id },
-//       });
-
-//       // Delete slang mentions
-//       await db.slangMention.deleteMany({
-//         where: { translationId: translation.id },
-//       });
-//     })
-//   );
-
-//   // Delete all translations
-//   await db.translation.deleteMany({ where: { userId } });
-
-//   // Clean up any unused slang terms
-//   await db.slangTerm.deleteMany({
-//     where: {
-//       protected: false,
-//       mentions: {
-//         none: {},
-//       },
-//     },
-//   });
-
-//   return translations;
-// };
-
 const getTrendingSlang = async () => {
   const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
 
